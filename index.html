@@ -5,520 +5,626 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rasulbek Rustamov · Paid Social</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
  
 /* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
  
-/* ── TOKENS ── */
+/* ── DESIGN TOKENS ── */
 :root {
-  --cream:   #f6f3ee;
-  --white:   #ffffff;
-  --ink:     #111111;
-  --mid:     #555555;
-  --soft:    #888888;
-  --rule:    #e0dbd3;
-  --orange:  #c9622a;   /* quam's exact orange */
-  --pill-bg: #ffffff;
-  --pill-bd: #d8d3cc;
-  --card-bg: #ffffff;
-  --card-bd: #e4dfd8;
-  --serif:   'Lora', Georgia, serif;
-  --sans:    'Inter', system-ui, sans-serif;
-}
-body.dark {
-  --cream:   #111009;
-  --white:   #1a1917;
-  --ink:     #f0ece4;
-  --mid:     #a09a92;
-  --soft:    #706a62;
-  --rule:    #2a2722;
-  --pill-bg: #1f1e1b;
-  --pill-bd: #333028;
-  --card-bg: #1a1917;
-  --card-bd: #2d2b26;
+  /* Palette */
+  --cream:      #f5f2ed;
+  --white:      #ffffff;
+  --ink:        #0e0d0b;
+  --mid:        #4a4540;
+  --soft:       #8c857d;
+  --rule:       #ddd8d0;
+  --orange:     #c9622a;
+  --orange-dim: rgba(201,98,42,.10);
+  --orange-glow:rgba(201,98,42,.18);
+ 
+  /* Cards */
+  --card-bg:    #ffffff;
+  --card-bd:    #e4dfd8;
+ 
+  /* Pills */
+  --pill-bg:    #ffffff;
+  --pill-bd:    #d6d0c8;
+ 
+  /* Type */
+  --serif:  'Lora', Georgia, serif;
+  --sans:   'Inter', system-ui, sans-serif;
+ 
+  /* Spacing scale (8pt) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 80px;
+ 
+  /* Radius */
+  --r-sm:  8px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-pill:100px;
+ 
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:  0 4px 16px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.05);
+ 
+  /* Animation */
+  --ease-out: cubic-bezier(.22,1,.36,1);
+  --ease-in:  cubic-bezier(.64,0,.78,0);
+  --t-fast:   150ms;
+  --t-base:   220ms;
+  --t-slow:   400ms;
 }
  
+/* ── DARK MODE ── */
+body.dark {
+  --cream:      #111009;
+  --white:      #1a1917;
+  --ink:        #f0ece4;
+  --mid:        #a09a92;
+  --soft:       #706a62;
+  --rule:       #2a2722;
+  --pill-bg:    #1f1e1b;
+  --pill-bd:    #333028;
+  --card-bg:    #1a1917;
+  --card-bd:    #2d2b26;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.3);
+  --shadow-md:  0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,.5);
+}
+ 
+/* ── BASE ── */
 body {
   background: var(--cream);
   color: var(--ink);
   font-family: var(--sans);
   font-weight: 400;
   line-height: 1.6;
-  transition: background .35s, color .35s;
+  transition: background var(--t-slow), color var(--t-slow);
+  overflow-x: hidden;
 }
+ 
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+ 
+/* ── SKIP LINK (accessibility) ── */
+.skip-link {
+  position: absolute; top: -999px; left: 16px;
+  background: var(--orange); color: #fff;
+  padding: 8px 16px; border-radius: var(--r-sm);
+  font-size: .8rem; font-weight: 600; z-index: 9999;
+  text-decoration: none;
+  transition: top var(--t-fast);
+}
+.skip-link:focus { top: 16px; }
  
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;
   padding: 0 40px;
-  height: 56px;
+  height: 58px;
   display: flex; align-items: center; justify-content: space-between;
   background: transparent;
-  transition: background .3s, border-color .3s;
+  transition: background var(--t-base), border-color var(--t-base), box-shadow var(--t-base);
   border-bottom: 1px solid transparent;
 }
 nav.scrolled {
-  background: rgba(246,243,238,.94);
+  background: rgba(245,242,237,.92);
   border-color: var(--rule);
-  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
-body.dark nav.scrolled { background: rgba(17,16,9,.94); }
+body.dark nav.scrolled { background: rgba(17,16,9,.92); }
+ 
 .nav-logo {
-  font-family: var(--serif); font-size: 1rem; font-weight: 600;
-  color: var(--ink); text-decoration: none; letter-spacing: -.01em;
+  font-family: var(--serif); font-size: 1.05rem; font-weight: 700;
+  color: var(--ink); text-decoration: none; letter-spacing: -.02em;
+  display: flex; align-items: center; gap: 2px;
 }
+.nav-logo-dot { color: var(--orange); font-size: .9rem; margin: 0 1px; }
+ 
 .nav-center {
-  display: flex; align-items: center; gap: 28px; list-style: none;
+  display: flex; align-items: center; gap: 32px; list-style: none;
 }
 .nav-center a {
-  font-size: .72rem; font-weight: 500; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--mid); text-decoration: none;
-  transition: color .2s;
+  font-size: .7rem; font-weight: 600; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--soft); text-decoration: none;
+  transition: color var(--t-fast);
+  padding: 4px 0;
+  position: relative;
+}
+.nav-center a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 1.5px; background: var(--orange);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--t-base) var(--ease-out);
 }
 .nav-center a:hover { color: var(--ink); }
-.nav-r { display: flex; align-items: center; gap: 12px; }
+.nav-center a:hover::after { transform: scaleX(1); }
+ 
+.nav-r { display: flex; align-items: center; gap: var(--sp-3); }
+ 
+/* Theme toggle */
 .theme-toggle {
-  width: 40px; height: 22px; border-radius: 11px;
+  width: 42px; height: 24px; border-radius: 12px;
   background: none; border: 1.5px solid var(--rule);
-  cursor: pointer; position: relative; transition: border-color .3s;
+  cursor: pointer; position: relative;
+  transition: border-color var(--t-base), background var(--t-base);
   flex-shrink: 0;
+  touch-action: manipulation;
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--orange); outline-offset: 2px;
 }
 .theme-toggle::after {
-  content: ''; position: absolute; top: 2.5px; left: 2.5px;
-  width: 13px; height: 13px; border-radius: 50%;
-  background: var(--soft); transition: transform .3s, background .3s;
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--soft);
+  transition: transform var(--t-base) var(--ease-out), background var(--t-base);
 }
+body.dark .theme-toggle { border-color: var(--orange-dim); background: var(--orange-dim); }
 body.dark .theme-toggle::after { transform: translateX(18px); background: var(--orange); }
-.ham {
-  display: none; flex-direction: column; gap: 4.5px;
-  cursor: pointer; background: none; border: none; padding: 4px;
-}
-.ham span { display: block; width: 20px; height: 1.5px; background: var(--ink); transition: all .3s; }
  
-/* MOBILE MENU */
+/* Hamburger */
+.ham {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; background: none; border: none; padding: 6px;
+  min-width: 44px; min-height: 44px;
+  align-items: center; justify-content: center;
+  touch-action: manipulation;
+}
+.ham:focus-visible { outline: 2px solid var(--orange); border-radius: var(--r-sm); }
+.ham span { display: block; width: 20px; height: 1.5px; background: var(--ink); transition: all var(--t-base); border-radius: 1px; }
+ 
+/* Mobile menu */
 .mob-menu {
   display: none; position: fixed; inset: 0;
   background: var(--cream); z-index: 299;
-  flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+  flex-direction: column; align-items: center; justify-content: center; gap: 40px;
 }
 .mob-menu.open { display: flex; }
 .mob-menu a {
-  font-family: var(--serif); font-size: 2.2rem; font-weight: 600;
-  color: var(--ink); text-decoration: none; transition: color .2s;
+  font-family: var(--serif); font-size: 2.4rem; font-weight: 700;
+  color: var(--ink); text-decoration: none;
+  transition: color var(--t-fast);
+  min-height: 44px; display: flex; align-items: center;
 }
 .mob-menu a:hover { color: var(--orange); }
-.mob-close { position: absolute; top: 22px; right: 40px; font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--soft); }
+.mob-close {
+  position: absolute; top: 18px; right: 40px;
+  font-size: 1.5rem; cursor: pointer; background: none; border: none;
+  color: var(--soft); min-width: 44px; min-height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  touch-action: manipulation;
+}
+.mob-close:focus-visible { outline: 2px solid var(--orange); border-radius: var(--r-sm); }
  
 /* ── PAGE SHELL ── */
-.page { max-width: 720px; margin: 0 auto; padding: 0 32px; }
+.page { max-width: 740px; margin: 0 auto; padding: 0 var(--sp-6); }
  
 /* ── HERO ── */
 #hero {
-  padding-top: 120px; padding-bottom: 64px;
+  padding-top: 130px; padding-bottom: var(--sp-8);
   border-bottom: 1px solid var(--rule);
 }
 .hero-eyebrow {
-  font-size: .68rem; font-weight: 600; letter-spacing: .18em;
+  font-size: .68rem; font-weight: 700; letter-spacing: .2em;
   text-transform: uppercase; color: var(--orange);
-  margin-bottom: 20px;
+  margin-bottom: var(--sp-5);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block; width: 20px; height: 1.5px; background: var(--orange);
+  flex-shrink: 0;
 }
 .hero-name {
   font-family: var(--serif); font-weight: 700;
-  font-size: clamp(3rem, 9vw, 5.5rem);
-  line-height: 1; letter-spacing: -.02em; color: var(--ink);
-  margin-bottom: 24px;
+  font-size: clamp(3.2rem, 10vw, 5.8rem);
+  line-height: 1.0; letter-spacing: -.025em; color: var(--ink);
+  margin-bottom: var(--sp-5);
 }
 .hero-name em { font-style: italic; color: var(--orange); }
 .hero-desc {
-  font-size: 1.05rem; color: var(--mid); line-height: 1.7;
-  max-width: 520px; margin-bottom: 48px; font-weight: 300;
+  font-size: 1.05rem; color: var(--mid); line-height: 1.75;
+  max-width: 540px; margin-bottom: var(--sp-7);
+  font-weight: 300;
 }
+.hero-desc strong { color: var(--ink); font-weight: 600; }
  
-/* Photo strip */
- 
- 
-/* Follow pills */
+/* Connect label */
 .follow-label {
-  font-size: .65rem; font-weight: 600; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--soft); margin-bottom: 14px;
+  font-size: .62rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--soft); margin-bottom: var(--sp-3);
 }
-.pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0; }
+ 
+/* Pills */
+.pill-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .pill {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 7px 14px; border: 1.5px solid var(--pill-bd);
-  background: var(--pill-bg); border-radius: 100px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--pill-bd);
+  background: var(--pill-bg);
+  border-radius: var(--r-pill);
   font-size: .75rem; font-weight: 500; color: var(--ink);
-  text-decoration: none; cursor: pointer; transition: border-color .2s, color .2s;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), box-shadow var(--t-fast), transform var(--t-fast);
+  touch-action: manipulation;
+  min-height: 36px;
 }
 .pill svg { flex-shrink: 0; }
-.pill:hover { border-color: var(--orange); color: var(--orange); }
+.pill:hover {
+  border-color: var(--orange); color: var(--orange);
+  box-shadow: 0 2px 8px var(--orange-glow);
+  transform: translateY(-1px);
+}
+.pill:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.pill:active { transform: translateY(0); }
  
 /* ── TICKER ── */
 .ticker-wrap {
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
-  padding: 13px 0; overflow: hidden; background: var(--white);
+  padding: 14px 0; overflow: hidden; background: var(--white);
 }
 .ticker-track {
   display: flex; width: max-content;
-  animation: ticker 32s linear infinite;
+  animation: ticker 36s linear infinite;
 }
 .ticker-track:hover { animation-play-state: paused; }
 .ticker-inner { display: flex; align-items: center; }
 .ticker-item {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 0 28px; font-size: .68rem; font-weight: 500;
-  letter-spacing: .08em; text-transform: uppercase; color: var(--soft);
+  padding: 0 28px;
+  font-size: .66rem; font-weight: 600;
+  letter-spacing: .10em; text-transform: uppercase; color: var(--soft);
   border-right: 1px solid var(--rule); white-space: nowrap;
-  transition: color .2s;
+  transition: color var(--t-fast);
 }
 .ticker-item:hover { color: var(--ink); }
 @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
  
-/* ── SECTIONS ── */
-.section-wrap { padding: 64px 0; border-bottom: 1px solid var(--rule); }
+/* ── SECTION COMMON ── */
+.section-wrap { padding: var(--sp-8) 0; border-bottom: 1px solid var(--rule); }
 .section-label {
-  font-size: .65rem; font-weight: 600; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--soft); margin-bottom: 32px;
+  font-size: .62rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--soft); margin-bottom: var(--sp-5);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+.section-label::before {
+  content: ''; display: inline-block;
+  width: 16px; height: 1.5px; background: var(--orange); flex-shrink: 0;
 }
 .section-heading {
-  font-family: var(--serif); font-size: clamp(1.6rem, 4vw, 2.6rem);
-  font-weight: 700; letter-spacing: -.02em; color: var(--ink);
-  line-height: 1.15; margin-bottom: 24px;
+  font-family: var(--serif); font-size: clamp(1.7rem, 4.5vw, 2.8rem);
+  font-weight: 700; letter-spacing: -.025em; color: var(--ink);
+  line-height: 1.12; margin-bottom: var(--sp-5);
 }
 .section-heading em { font-style: italic; color: var(--orange); }
  
 /* ── ABOUT ── */
 .about-lead {
-  font-size: 1.05rem; color: var(--mid); line-height: 1.75;
-  margin-bottom: 16px; font-weight: 300;
+  font-size: 1.05rem; color: var(--mid); line-height: 1.78;
+  margin-bottom: var(--sp-4); font-weight: 300;
 }
-.about-body { font-size: .9rem; color: var(--mid); line-height: 1.8; margin-bottom: 16px; }
+.about-lead strong { color: var(--ink); font-weight: 600; }
+.about-body {
+  font-size: .9rem; color: var(--mid); line-height: 1.8; margin-bottom: var(--sp-4);
+}
  
 /* Stats row */
 .stats-row {
   display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 0; margin: 40px 0;
-  border: 1.5px solid var(--rule); border-radius: 12px; overflow: hidden;
+  margin: var(--sp-6) 0;
+  border: 1.5px solid var(--rule); border-radius: var(--r-md); overflow: hidden;
 }
 .stat {
-  padding: 20px 14px; text-align: center;
-  border-right: 1.5px solid var(--rule); min-width: 0;
+  padding: 22px 16px; text-align: center;
+  border-right: 1.5px solid var(--rule);
+  transition: background var(--t-fast);
 }
+.stat:hover { background: var(--orange-dim); }
 .stat:last-child { border-right: none; }
 .stat-n {
-  font-family: var(--serif); font-size: 1.3rem; font-weight: 700;
+  font-family: var(--serif); font-size: 1.35rem; font-weight: 700;
   color: var(--ink); line-height: 1.1; display: block; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
-.stat-l { font-size: .6rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin-top: 5px; }
+.stat-l {
+  font-size: .58rem; font-weight: 600; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--soft); margin-top: 6px;
+  line-height: 1.4;
+}
  
 /* Cert pills */
-.cert-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
+.cert-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-5); }
 .cert {
-  font-size: .65rem; font-weight: 500; letter-spacing: .06em;
-  padding: 6px 12px; border: 1.5px solid var(--pill-bd);
-  border-radius: 100px; color: var(--mid); background: var(--pill-bg);
-  transition: border-color .2s, color .2s;
-}
-.cert:hover { border-color: var(--orange); color: var(--ink); }
- 
-/* ── CARD ROWS (quam style) ── */
-.card-list { display: flex; flex-direction: column; gap: 12px; }
-.card-row {
-  display: flex; align-items: center; gap: 20px;
-  padding: 24px 24px; background: var(--card-bg);
-  border: 1.5px solid var(--card-bd); border-radius: 14px;
-  text-decoration: none; color: var(--ink);
-  transition: border-color .25s, box-shadow .25s;
+  font-size: .65rem; font-weight: 500; letter-spacing: .05em;
+  padding: 6px 13px;
+  border: 1.5px solid var(--pill-bd);
+  border-radius: var(--r-pill); color: var(--mid); background: var(--pill-bg);
+  transition: border-color var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
   cursor: default;
 }
-.card-row:hover { border-color: var(--orange); box-shadow: 0 2px 20px rgba(201,98,42,.08); }
+.cert:hover {
+  border-color: var(--orange); color: var(--ink);
+  box-shadow: 0 2px 8px var(--orange-dim);
+}
+ 
+/* ── EXPERTISE CARDS ── */
+.card-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.card-row {
+  display: flex; align-items: flex-start; gap: var(--sp-5);
+  padding: 26px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-bd); border-radius: var(--r-md);
+  color: var(--ink);
+  transition: border-color var(--t-base), box-shadow var(--t-base), transform var(--t-base);
+  cursor: default;
+}
+.card-row:hover {
+  border-color: var(--orange);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--orange-dim);
+  transform: translateY(-2px);
+}
 .card-icon {
-  width: 44px; height: 44px; border-radius: 10px;
+  width: 46px; height: 46px; border-radius: var(--r-sm);
   background: var(--cream); border: 1.5px solid var(--rule);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; font-size: 1.1rem;
-  transition: background .2s;
+  transition: background var(--t-fast), border-color var(--t-fast);
 }
-.card-row:hover .card-icon { background: rgba(201,98,42,.08); border-color: var(--orange); }
+.card-row:hover .card-icon { background: var(--orange-dim); border-color: var(--orange); }
 .card-body { flex: 1; min-width: 0; }
 .card-no {
-  font-size: .6rem; font-weight: 600; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--soft); margin-bottom: 3px;
+  font-size: .58rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--soft); margin-bottom: 4px;
 }
 .card-title {
   font-family: var(--serif); font-size: 1.15rem; font-weight: 600;
-  color: var(--ink); line-height: 1.2; margin-bottom: 4px;
+  color: var(--ink); line-height: 1.2; margin-bottom: 5px;
 }
-.card-desc { font-size: .78rem; color: var(--soft); line-height: 1.5; }
-.card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.card-desc { font-size: .78rem; color: var(--soft); line-height: 1.55; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
 .card-tag {
   font-size: .58rem; font-weight: 500; letter-spacing: .06em;
-  padding: 3px 8px; border-radius: 100px;
+  padding: 3px 9px; border-radius: var(--r-pill);
   background: var(--cream); border: 1px solid var(--rule); color: var(--mid);
 }
-.card-arrow {
-  font-size: 1rem; color: var(--soft); flex-shrink: 0;
-  transition: transform .25s, color .25s;
-}
-.card-row:hover .card-arrow { transform: translate(3px,-3px); color: var(--orange); }
-/* Expanded card with bullets */
-.card-row.expanded { flex-wrap: wrap; align-items: flex-start; }
-.card-row.expanded .card-arrow { margin-left: auto; margin-top: 0; }
+.card-row.expanded { flex-wrap: wrap; }
 .card-bullets {
-  width: 100%; padding-left: 64px; margin-top: 10px;
+  width: 100%; padding-left: 66px; margin-top: var(--sp-3);
   list-style: none;
 }
 .card-bullets li {
-  font-size: .78rem; color: var(--mid); line-height: 1.7;
-  padding-left: 14px; position: relative; margin-bottom: 3px;
+  font-size: .78rem; color: var(--mid); line-height: 1.75;
+  padding-left: 16px; position: relative; margin-bottom: 4px;
 }
-.card-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--orange); font-size: .7rem; }
-.card-kpis { display: flex; gap: 20px; padding-left: 64px; margin-top: 12px; width: 100%; }
-.card-kpi-v { font-family: var(--serif); font-size: .9rem; font-weight: 700; color: var(--ink); }
-.card-kpi-l { font-size: .58rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--soft); }
+.card-bullets li::before {
+  content: ''; position: absolute; left: 0; top: 10px;
+  width: 6px; height: 1.5px; background: var(--orange);
+}
+.card-kpis {
+  display: flex; gap: 24px; padding-left: 66px; margin-top: var(--sp-3);
+  width: 100%; flex-wrap: wrap;
+}
+.card-kpi-v { font-family: var(--serif); font-size: .95rem; font-weight: 700; color: var(--ink); }
+.card-kpi-l { font-size: .56rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
  
 /* ── SKILL BARS ── */
-.skill-section { margin-top: 40px; }
-.skill-row-item { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.skill-section { margin-top: var(--sp-7); padding-top: var(--sp-6); border-top: 1px solid var(--rule); }
+.skill-row-item { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
 .skill-name { font-size: .68rem; font-weight: 500; color: var(--mid); width: 200px; flex-shrink: 0; }
 .skill-track { flex: 1; height: 3px; background: var(--rule); border-radius: 2px; position: relative; overflow: hidden; }
-.skill-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--orange); width: 0; border-radius: 2px; transition: width 1.4s cubic-bezier(.22,1,.36,1); }
+.skill-fill {
+  position: absolute; left: 0; top: 0; height: 100%;
+  background: linear-gradient(90deg, var(--orange), #e0894e);
+  width: 0; border-radius: 2px;
+  transition: width 1.5s var(--ease-out);
+}
 .skill-pct { font-family: var(--serif); font-size: .85rem; color: var(--soft); width: 36px; text-align: right; flex-shrink: 0; }
  
 /* ── EXPERIENCE ── */
 .xp-list { display: flex; flex-direction: column; gap: 0; }
 .xp-item {
-  padding: 32px 0; border-bottom: 1px solid var(--rule);
-  display: grid; grid-template-columns: 120px 1fr; gap: 20px;
-  opacity: 0; transform: translateY(18px); transition: all .6s;
+  padding: var(--sp-6) 0; border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: 128px 1fr; gap: var(--sp-5);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .65s var(--ease-out), transform .65s var(--ease-out);
 }
 .xp-item:first-child { border-top: 1px solid var(--rule); }
 .xp-item.show { opacity: 1; transform: translateY(0); }
-.xp-period { font-size: .65rem; font-weight: 500; letter-spacing: .06em; color: var(--soft); padding-top: 5px; line-height: 1.6; }
-.xp-role { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
-.xp-co { font-size: .75rem; color: var(--soft); margin-bottom: 12px; }
+.xp-period {
+  font-size: .63rem; font-weight: 600; letter-spacing: .06em;
+  color: var(--soft); padding-top: 6px; line-height: 1.6;
+  text-transform: uppercase;
+}
+.xp-role { font-family: var(--serif); font-size: 1.12rem; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.xp-co { font-size: .74rem; color: var(--orange); margin-bottom: var(--sp-3); font-weight: 500; }
 .xp-bullets { list-style: none; }
-.xp-bullets li { font-size: .8rem; color: var(--mid); line-height: 1.75; padding-left: 14px; position: relative; margin-bottom: 3px; }
-.xp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--orange); font-size: .7rem; }
+.xp-bullets li {
+  font-size: .8rem; color: var(--mid); line-height: 1.78;
+  padding-left: 16px; position: relative; margin-bottom: 4px;
+}
+.xp-bullets li::before {
+  content: ''; position: absolute; left: 0; top: 10px;
+  width: 6px; height: 1.5px; background: var(--orange);
+}
+.xp-bullets strong { color: var(--ink); }
+ 
+/* ── RECOMMENDATIONS ── */
+.rec-list { display: flex; flex-direction: column; gap: var(--sp-4); }
+.rec-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-bd);
+  border-radius: var(--r-md);
+  padding: 26px;
+  transition: border-color var(--t-base), box-shadow var(--t-base), transform var(--t-base);
+}
+.rec-card:hover {
+  border-color: var(--orange);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--orange-dim);
+  transform: translateY(-2px);
+}
+.rec-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: var(--sp-4); }
+.rec-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), #e0894e);
+  color: #fff;
+  font-family: var(--serif); font-size: .95rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px var(--orange-glow);
+}
+.rec-meta { flex: 1; }
+.rec-name {
+  font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink);
+}
+.rec-name a {
+  color: inherit; text-decoration: none;
+  border-bottom: 1px solid var(--orange);
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.rec-name a:hover { color: var(--orange); }
+.rec-title { font-size: .71rem; color: var(--mid); margin-top: 3px; line-height: 1.45; }
+.rec-date { font-size: .66rem; color: var(--soft); margin-top: 4px; }
+.rec-relation {
+  font-size: .63rem; color: var(--orange); background: var(--orange-dim);
+  border-radius: var(--r-pill); padding: 3px 10px;
+  display: inline-block; margin-top: 6px; font-weight: 500;
+}
+.rec-body { font-size: .84rem; color: var(--mid); line-height: 1.75; }
+.rec-body p + p { margin-top: 10px; }
  
 /* ── CONTACT ── */
-#contact { padding-top: 64px; padding-bottom: 80px; }
-.contact-links { display: flex; flex-direction: column; gap: 0; margin-top: 32px; }
+#contact { padding-top: var(--sp-8); padding-bottom: 90px; }
+.contact-links { display: flex; flex-direction: column; gap: 0; margin-top: var(--sp-5); }
 .contact-link {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 0; border-top: 1px solid var(--rule);
   text-decoration: none; color: var(--ink);
-  font-size: .82rem; font-weight: 500; transition: color .2s;
+  font-size: .82rem; font-weight: 500;
+  transition: color var(--t-fast), padding-left var(--t-base) var(--ease-out);
+  min-height: 56px;
 }
 .contact-link:last-child { border-bottom: 1px solid var(--rule); }
-.contact-link:hover { color: var(--orange); }
-.contact-arrow { font-size: .85rem; transition: transform .25s; }
-.contact-link:hover .contact-arrow { transform: translate(3px,-3px); }
+.contact-link:hover { color: var(--orange); padding-left: 6px; }
+.contact-arrow {
+  font-size: .9rem; transition: transform var(--t-base) var(--ease-out), color var(--t-fast);
+}
+.contact-link:hover .contact-arrow { transform: translate(4px,-4px); color: var(--orange); }
+.contact-link:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; border-radius: var(--r-sm); }
+ 
+/* Languages */
 .lang-grid {
   display: grid; grid-template-columns: repeat(4,1fr); gap: 0;
-  margin-top: 48px;
-  border: 1.5px solid var(--rule); border-radius: 12px; overflow: hidden;
+  margin-top: var(--sp-7);
+  border: 1.5px solid var(--rule); border-radius: var(--r-md); overflow: hidden;
 }
 .lang-cell {
-  padding: 18px 16px; text-align: center;
+  padding: 20px 16px; text-align: center;
   border-right: 1.5px solid var(--rule);
+  transition: background var(--t-fast);
 }
+.lang-cell:hover { background: var(--orange-dim); }
 .lang-cell:last-child { border-right: none; }
-.lang-name { font-size: .75rem; font-weight: 600; color: var(--ink); display: block; }
-.lang-level { font-size: .6rem; font-weight: 400; letter-spacing: .06em; color: var(--soft); margin-top: 3px; display: block; }
+.lang-name { font-size: .78rem; font-weight: 700; color: var(--ink); display: block; }
+.lang-level { font-size: .6rem; font-weight: 500; letter-spacing: .06em; color: var(--soft); margin-top: 4px; display: block; }
  
 /* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--rule);
-  padding: 24px 32px; display: flex; justify-content: space-between;
-  align-items: center; flex-wrap: wrap; gap: 10px;
-  font-size: .65rem; font-weight: 500; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--soft); max-width: 720px;
-  margin: 0 auto;
+  padding: 24px var(--sp-6);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px;
+  font-size: .63rem; font-weight: 600; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--soft);
+  max-width: 740px; margin: 0 auto;
 }
  
 /* ── RESPONSIVE ── */
  
-/* ══════════════════════════════════════
-   RESPONSIVE — 4 breakpoints
-   1024 / 768 / 560 / 380
-══════════════════════════════════════ */
- 
-/* ── 1024px: tablet landscape ── */
+/* 1024px tablet landscape */
 @media(max-width:1024px){
   .page { max-width: 680px; }
   .card-kpis { flex-wrap: wrap; gap: 12px; }
 }
  
-/* ── 768px: tablet portrait ── */
+/* 768px tablet portrait */
 @media(max-width:768px){
-  /* Nav */
   nav { padding: 0 24px; }
   .nav-center { display: none; }
   .ham { display: flex; }
- 
-  /* Page shell */
   .page { padding: 0 20px; max-width: 100%; }
- 
-  /* Hero */
-  #hero { padding-top: 80px; padding-bottom: 48px; }
+  #hero { padding-top: 88px; padding-bottom: var(--sp-7); }
   .hero-name { font-size: clamp(2.8rem, 10vw, 4.5rem); }
-  .hero-desc { font-size: .95rem; }
- 
-  /* Stats grid → 2 cols */
-  .stats-row {
-    grid-template-columns: 1fr 1fr;
-  }
+  .stats-row { grid-template-columns: 1fr 1fr; }
   .stat:nth-child(2) { border-right: none; }
   .stat:nth-child(3) { border-top: 1.5px solid var(--rule); border-right: 1.5px solid var(--rule); }
   .stat:nth-child(4) { border-top: 1.5px solid var(--rule); border-right: none; }
-  .stat-n { white-space: normal; font-size: 1.6rem; }
- 
-  /* Cards */
-  .card-row { padding: 18px 16px; gap: 14px; flex-wrap: wrap; }
+  .stat-n { white-space: normal; font-size: 1.5rem; }
+  .card-row { padding: 20px 18px; flex-wrap: wrap; }
   .card-bullets { padding-left: 0; }
-  .card-kpis { padding-left: 0; flex-wrap: wrap; gap: 12px; }
-  .card-tags { margin-top: 10px; }
- 
-  /* Skill bars */
+  .card-kpis { padding-left: 0; }
   .skill-name { width: 150px; }
- 
-  /* Experience */
   .xp-item { grid-template-columns: 1fr; gap: 4px; }
-  .xp-period { font-size: .6rem; }
- 
-  /* Languages */
-  .lang-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+  .lang-grid { grid-template-columns: 1fr 1fr; }
   .lang-cell:nth-child(2) { border-right: none; }
   .lang-cell:nth-child(3) { border-top: 1.5px solid var(--rule); border-right: 1.5px solid var(--rule); }
   .lang-cell:nth-child(4) { border-top: 1.5px solid var(--rule); border-right: none; }
- 
-  /* Footer */
   footer { padding: 20px; flex-direction: column; text-align: center; gap: 6px; }
 }
  
-/* ── 560px: large phone ── */
+/* 560px large phone */
 @media(max-width:560px){
   nav { padding: 0 16px; }
   .mob-close { right: 20px; }
- 
   .page { padding: 0 16px; }
- 
-  /* Hero */
-  #hero { padding-top: 72px; padding-bottom: 40px; }
-  .hero-eyebrow { font-size: .6rem; letter-spacing: .12em; }
+  #hero { padding-top: 78px; padding-bottom: var(--sp-6); }
   .hero-name { font-size: clamp(2.4rem, 11vw, 3.8rem); }
-  .hero-desc { font-size: .9rem; }
-  .pill-row { gap: 6px; }
-  .pill { font-size: .7rem; padding: 6px 12px; }
- 
-  /* Ticker */
-  .ticker-item { padding: 0 18px; font-size: .62rem; }
- 
-  /* Sections */
-  .section-wrap { padding: 48px 0; }
+  .hero-desc { font-size: .92rem; }
+  .pill { font-size: .7rem; padding: 7px 12px; }
+  .section-wrap { padding: var(--sp-7) 0; }
   .section-heading { font-size: clamp(1.5rem, 6vw, 2.2rem); }
- 
-  /* About */
-  .about-lead { font-size: .95rem; }
-  .about-body { font-size: .85rem; }
-  .stats-row { grid-template-columns: 1fr 1fr; border-radius: 10px; }
-  .stat { padding: 16px 12px; }
-  .stat-n { font-size: 1.3rem; }
-  .stat-l { font-size: .55rem; }
-  .cert-row { gap: 6px; }
-  .cert { font-size: .6rem; padding: 5px 10px; }
- 
-  /* Cards */
-  .card-icon { width: 38px; height: 38px; border-radius: 8px; }
-  .card-icon svg { width: 17px; height: 17px; }
-  .card-no { font-size: .58rem; }
-  .card-title { font-size: 1rem; }
-  .card-desc { font-size: .74rem; }
-  .card-tag { font-size: .55rem; padding: 2px 7px; }
-  .card-bullets li { font-size: .74rem; }
-  .card-kpi-v { font-size: .85rem; }
-  .card-kpi-l { font-size: .55rem; }
- 
-  /* Skill bars */
+  .stats-row { border-radius: var(--r-sm); }
+  .stat { padding: 18px 12px; }
+  .stat-n { font-size: 1.25rem; }
+  .card-row { padding: 18px 16px; border-radius: var(--r-sm); }
+  .card-icon { width: 40px; height: 40px; }
   .skill-name { width: 120px; font-size: .62rem; }
-  .skill-pct { font-size: .78rem; width: 30px; }
- 
-  /* Experience */
   .xp-role { font-size: 1rem; }
-  .xp-co { font-size: .7rem; }
-  .xp-bullets li { font-size: .76rem; }
- 
-  /* Contact */
-  .contact-link { font-size: .76rem; }
-  .lang-grid { border-radius: 10px; }
-  .lang-cell { padding: 14px 12px; }
-  .lang-name { font-size: .7rem; }
-  .lang-level { font-size: .56rem; }
+  .rec-card { padding: 20px 18px; border-radius: var(--r-sm); }
+  .rec-avatar { width: 42px; height: 42px; }
 }
  
-/* ── RECOMMENDATIONS ── */
-.rec-list { display: flex; flex-direction: column; gap: 20px; }
-.rec-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-bd);
-  border-radius: 14px;
-  padding: 24px 26px;
-  transition: border-color .2s;
-}
-.rec-card:hover { border-color: var(--orange); }
-.rec-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
-.rec-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: var(--orange); color: #fff;
-  font-family: var(--serif); font-size: 1rem; font-weight: 600;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.rec-meta { flex: 1; }
-.rec-name { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--ink); }
-.rec-title { font-size: .72rem; color: var(--mid); margin-top: 2px; line-height: 1.4; }
-.rec-date { font-size: .68rem; color: var(--soft); margin-top: 4px; }
-.rec-relation {
-  font-size: .64rem; color: var(--orange); background: rgba(201,98,42,.1);
-  border-radius: 20px; padding: 2px 9px; display: inline-block; margin-top: 5px;
-}
-.rec-body { font-size: .84rem; color: var(--mid); line-height: 1.7; }
-.rec-body p + p { margin-top: 10px; }
-.rec-quote {
-  font-family: var(--serif); font-size: 1.35rem; color: var(--orange);
-  line-height: 1; margin-bottom: 6px; display: block;
-}
- 
-/* ── 380px: small phone ── */
+/* 380px small phone */
 @media(max-width:380px){
   .page { padding: 0 14px; }
- 
-  .hero-name { font-size: clamp(2rem, 12vw, 3rem); letter-spacing: -.015em; }
-  .hero-desc { font-size: .85rem; }
-  .pill { font-size: .65rem; padding: 5px 10px; gap: 5px; }
- 
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .stat-n { font-size: 1.2rem; }
- 
-  .card-row { padding: 14px 12px; gap: 10px; border-radius: 10px; }
-  .card-icon { width: 34px; height: 34px; }
-  .card-title { font-size: .95rem; }
- 
-  .skill-name { width: 100px; font-size: .58rem; }
- 
-  .xp-role { font-size: .92rem; }
-  .xp-bullets li { font-size: .72rem; }
- 
-  .lang-grid { grid-template-columns: 1fr 1fr; }
-  .lang-cell { padding: 12px 10px; }
- 
+  .hero-name { font-size: clamp(2rem, 12vw, 3rem); }
+  .hero-desc { font-size: .87rem; }
+  .pill { font-size: .66rem; padding: 6px 11px; gap: 5px; }
+  .stat-n { font-size: 1.15rem; }
+  .card-row { padding: 14px 13px; }
+  .card-title { font-size: 1.05rem; }
+  .lang-cell { padding: 14px 10px; }
   footer { font-size: .58rem; }
 }
  
@@ -526,20 +632,23 @@ footer {
 </head>
 <body>
  
+<!-- SKIP LINK -->
+<a href="#main" class="skip-link">Skip to main content</a>
+ 
 <!-- MOBILE MENU -->
-<div class="mob-menu" id="mobMenu">
-  <button class="mob-close" onclick="document.getElementById('mobMenu').classList.remove('open')">✕</button>
-  <a href="#about"           onclick="document.getElementById('mobMenu').classList.remove('open')">About</a>
-  <a href="#expertise"       onclick="document.getElementById('mobMenu').classList.remove('open')">Expertise</a>
-  <a href="#experience"      onclick="document.getElementById('mobMenu').classList.remove('open')">Experience</a>
-  <a href="#recommendations" onclick="document.getElementById('mobMenu').classList.remove('open')">Recommendations</a>
-  <a href="#contact"         onclick="document.getElementById('mobMenu').classList.remove('open')">Contact</a>
+<div class="mob-menu" id="mobMenu" role="dialog" aria-label="Navigation menu">
+  <button class="mob-close" onclick="closeMobileMenu()" aria-label="Close menu">✕</button>
+  <a href="#about"           onclick="closeMobileMenu()">About</a>
+  <a href="#expertise"       onclick="closeMobileMenu()">Expertise</a>
+  <a href="#experience"      onclick="closeMobileMenu()">Experience</a>
+  <a href="#recommendations" onclick="closeMobileMenu()">Recommendations</a>
+  <a href="#contact"         onclick="closeMobileMenu()">Contact</a>
 </div>
  
 <!-- NAV -->
-<nav id="nav">
-  <a href="#" class="nav-logo" style="display:flex;align-items:center;gap:2px;text-decoration:none;">
-    <span style="font-family:var(--serif);font-weight:700;font-size:1.1rem;letter-spacing:-.02em;color:var(--ink);">R</span><span style="color:var(--orange);font-size:.9rem;line-height:1;margin:0 1px;font-family:var(--serif);">·</span><span style="font-family:var(--serif);font-weight:700;font-size:1.1rem;letter-spacing:-.02em;color:var(--ink);">R</span>
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="Rasulbek Rustamov — home">
+    <span>R</span><span class="nav-logo-dot">·</span><span>R</span>
   </a>
   <ul class="nav-center">
     <li><a href="#about">About</a></li>
@@ -549,47 +658,66 @@ footer {
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-r">
-    <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme"></button>
-    <button class="ham" onclick="document.getElementById('mobMenu').classList.add('open')" aria-label="Menu">
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle dark mode"></button>
+    <button class="ham" onclick="openMobileMenu()" aria-label="Open menu" aria-expanded="false" id="hamBtn">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
  
+<main id="main">
+ 
 <!-- HERO -->
 <div class="page">
 <section id="hero">
-  <p class="hero-eyebrow">Senior Paid Social Executive · Paid Media Specialist · Warsaw</p>
+  <p class="hero-eyebrow">Senior Paid Social Executive · Warsaw</p>
   <h1 class="hero-name">Rasulbek<br><em>Rustamov</em></h1>
-  <p class="hero-desc">Results-driven Paid Social Executive with 5+ years managing <strong>$10M–15M+ in advertising budgets</strong> across Meta, TikTok, Snapchat, Pinterest, and LinkedIn. Proven track record exceeding CPI, CPL, and ROAS targets across the US and 11+ EU markets.</p>
+  <p class="hero-desc">Results-driven Paid Social Executive with 5+ years managing <strong>$7M–10M+</strong> in advertising budgets across Meta, TikTok, Snapchat, Pinterest, and LinkedIn. Proven track record exceeding CPI, CPL, and ROAS targets across the US and 11+ EU markets.</p>
  
-    <p class="follow-label">Connect</p>
+  <p class="follow-label">Connect</p>
   <div class="pill-row">
-    <a href="https://www.linkedin.com/in/rasulbek-rustamov/" class="pill" target="_blank">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    <a href="https://www.linkedin.com/in/rasulbek-rustamov/" class="pill" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
       LinkedIn
     </a>
-    <a href="https://t.me/rasulbekrustamov" class="pill" target="_blank">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.12 14.4l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.696.186z"/></svg>
+    <a href="https://t.me/rasulbekrustamov" class="pill" target="_blank" rel="noopener" aria-label="Telegram">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.12 14.4l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.696.186z"/></svg>
       Telegram
     </a>
-    <a href="mailto:rrasulbekr@gmail.com" class="pill">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+    <a href="mailto:rrasulbekr@gmail.com" class="pill" aria-label="Send email">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
       Email
     </a>
-    <a href="https://www.instagram.com/rasulbekrrustamov/" class="pill" target="_blank">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12c0 3.259.014 3.668.072 4.948.059 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24c3.259 0 3.668-.014 4.948-.072 1.277-.059 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.948 0-3.259-.014-3.667-.072-4.947-.059-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+    <a href="https://www.instagram.com/rasulbekrrustamov/" class="pill" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12c0 3.259.014 3.668.072 4.948.059 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24c3.259 0 3.668-.014 4.948-.072 1.277-.059 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.948 0-3.259-.014-3.667-.072-4.947-.059-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
       Instagram
     </a>
- 
   </div>
 </section>
 </div>
  
 <!-- TICKER -->
-<div class="ticker-wrap">
+<div class="ticker-wrap" aria-hidden="true">
   <div class="ticker-track">
-    <div class="ticker-inner"><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#0081FB" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Meta</title><path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"/></svg><span>Meta Ads</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#E4405F" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg><span>Instagram</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#1877F2" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Facebook</title><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg><span>Facebook</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#FFFC00" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Snapchat</title><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg><span>Snapchat</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#EE1D52" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>TikTok</title><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg><span>TikTok</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#BD081C" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Pinterest</title><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg><span>Pinterest</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#FF4500" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Reddit</title><path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"/></svg><span>Reddit</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#AAAAAA" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>X</title><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg><span>X / Twitter</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#4285F4" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Google Ads</title><path d="M3.9998 22.9291C1.7908 22.9291 0 21.1383 0 18.9293s1.7908-3.9998 3.9998-3.9998 3.9998 1.7908 3.9998 3.9998-1.7908 3.9998-3.9998 3.9998zm19.4643-6.0004L15.4632 3.072C14.3586 1.1587 11.9121.5028 9.9988 1.6074S7.4295 5.1585 8.5341 7.0718l8.0009 13.8567c1.1046 1.9133 3.5511 2.5679 5.4644 1.4646 1.9134-1.1046 2.568-3.5511 1.4647-5.4644zM7.5137 4.8438L1.5645 15.1484A4.5 4.5 0 0 1 4 14.4297c2.5597-.0075 4.6248 2.1585 4.4941 4.7148l3.2168-5.5723-3.6094-6.25c-.4499-.7793-.6322-1.6394-.5878-2.4784z"/></svg><span>Google Ads</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#E37400" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Google Analytics</title><path d="M22.84 2.9982v17.9987c.0086 1.6473-1.3197 2.9897-2.967 2.9984a2.9808 2.9808 0 01-.3677-.0208c-1.528-.226-2.6477-1.5558-2.6105-3.1V3.1204c-.0369-1.5458 1.0856-2.8762 2.6157-3.1 1.6361-.1915 3.1178.9796 3.3093 2.6158.014.1201.0208.241.0202.3619zM4.1326 18.0548c-1.6417 0-2.9726 1.331-2.9726 2.9726C1.16 22.6691 2.4909 24 4.1326 24s2.9726-1.3309 2.9726-2.9726-1.331-2.9726-2.9726-2.9726zm7.8728-9.0098c-.0171 0-.0342 0-.0513.0003-1.6495.0904-2.9293 1.474-2.891 3.1256v7.9846c0 2.167.9535 3.4825 2.3505 3.763 1.6118.3266 3.1832-.7152 3.5098-2.327.04-.1974.06-.3983.0593-.5998v-8.9585c.003-1.6474-1.33-2.9852-2.9773-2.9882z"/></svg><span>Analytics</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#0081FB" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Meta</title><path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"/></svg><span>Meta Ads</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#E4405F" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg><span>Instagram</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#1877F2" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Facebook</title><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg><span>Facebook</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#FFFC00" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Snapchat</title><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg><span>Snapchat</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#EE1D52" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>TikTok</title><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg><span>TikTok</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#BD081C" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Pinterest</title><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg><span>Pinterest</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#FF4500" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Reddit</title><path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"/></svg><span>Reddit</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#AAAAAA" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>X</title><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg><span>X / Twitter</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#4285F4" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Google Ads</title><path d="M3.9998 22.9291C1.7908 22.9291 0 21.1383 0 18.9293s1.7908-3.9998 3.9998-3.9998 3.9998 1.7908 3.9998 3.9998-1.7908 3.9998-3.9998 3.9998zm19.4643-6.0004L15.4632 3.072C14.3586 1.1587 11.9121.5028 9.9988 1.6074S7.4295 5.1585 8.5341 7.0718l8.0009 13.8567c1.1046 1.9133 3.5511 2.5679 5.4644 1.4646 1.9134-1.1046 2.568-3.5511 1.4647-5.4644zM7.5137 4.8438L1.5645 15.1484A4.5 4.5 0 0 1 4 14.4297c2.5597-.0075 4.6248 2.1585 4.4941 4.7148l3.2168-5.5723-3.6094-6.25c-.4499-.7793-.6322-1.6394-.5878-2.4784z"/></svg><span>Google Ads</span></span><span class="ticker-item"><svg width="16" height="16" style="display:inline-block;vertical-align:middle;flex-shrink:0;" fill="#E37400" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Google Analytics</title><path d="M22.84 2.9982v17.9987c.0086 1.6473-1.3197 2.9897-2.967 2.9984a2.9808 2.9808 0 01-.3677-.0208c-1.528-.226-2.6477-1.5558-2.6105-3.1V3.1204c-.0369-1.5458 1.0856-2.8762 2.6157-3.1 1.6361-.1915 3.1178.9796 3.3093 2.6158.014.1201.0208.241.0202.3619zM4.1326 18.0548c-1.6417 0-2.9726 1.331-2.9726 2.9726C1.16 22.6691 2.4909 24 4.1326 24s2.9726-1.3309 2.9726-2.9726-1.331-2.9726-2.9726-2.9726zm7.8728-9.0098c-.0171 0-.0342 0-.0513.0003-1.6495.0904-2.9293 1.474-2.891 3.1256v7.9846c0 2.167.9535 3.4825 2.3505 3.763 1.6118.3266 3.1832-.7152 3.5098-2.327.04-.1974.06-.3983.0593-.5998v-8.9585c.003-1.6474-1.33-2.9852-2.9773-2.9882z"/></svg><span>Analytics</span></span></div>
+    <div class="ticker-inner">
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#0081FB" viewBox="0 0 24 24"><path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"/></svg>Meta Ads</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#EE1D52" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>TikTok</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#FFFC00" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>Snapchat</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#BD081C" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#FF4500" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"/></svg>Reddit</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#4285F4" viewBox="0 0 24 24"><path d="M3.9998 22.9291C1.7908 22.9291 0 21.1383 0 18.9293s1.7908-3.9998 3.9998-3.9998 3.9998 1.7908 3.9998 3.9998-1.7908 3.9998-3.9998 3.9998zm19.4643-6.0004L15.4632 3.072C14.3586 1.1587 11.9121.5028 9.9988 1.6074S7.4295 5.1585 8.5341 7.0718l8.0009 13.8567c1.1046 1.9133 3.5511 2.5679 5.4644 1.4646 1.9134-1.1046 2.568-3.5511 1.4647-5.4644zM7.5137 4.8438L1.5645 15.1484A4.5 4.5 0 0 1 4 14.4297c2.5597-.0075 4.6248 2.1585 4.4941 4.7148l3.2168-5.5723-3.6094-6.25c-.4499-.7793-.6322-1.6394-.5878-2.4784z"/></svg>Google Ads</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#AAAAAA" viewBox="0 0 24 24"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg>X / Twitter</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#E37400" viewBox="0 0 24 24"><path d="M22.84 2.9982v17.9987c.0086 1.6473-1.3197 2.9897-2.967 2.9984a2.9808 2.9808 0 01-.3677-.0208c-1.528-.226-2.6477-1.5558-2.6105-3.1V3.1204c-.0369-1.5458 1.0856-2.8762 2.6157-3.1 1.6361-.1915 3.1178.9796 3.3093 2.6158.014.1201.0208.241.0202.3619zM4.1326 18.0548c-1.6417 0-2.9726 1.331-2.9726 2.9726C1.16 22.6691 2.4909 24 4.1326 24s2.9726-1.3309 2.9726-2.9726-1.331-2.9726-2.9726-2.9726zm7.8728-9.0098c-.0171 0-.0342 0-.0513.0003-1.6495.0904-2.9293 1.474-2.891 3.1256v7.9846c0 2.167.9535 3.4825 2.3505 3.763 1.6118.3266 3.1832-.7152 3.5098-2.327.04-.1974.06-.3983.0593-.5998v-8.9585c.003-1.6474-1.33-2.9852-2.9773-2.9882z"/></svg>Analytics</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#0081FB" viewBox="0 0 24 24"><path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"/></svg>Meta Ads</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#EE1D52" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>TikTok</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#FFFC00" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>Snapchat</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#BD081C" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>Pinterest</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#FF4500" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"/></svg>Reddit</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#4285F4" viewBox="0 0 24 24"><path d="M3.9998 22.9291C1.7908 22.9291 0 21.1383 0 18.9293s1.7908-3.9998 3.9998-3.9998 3.9998 1.7908 3.9998 3.9998-1.7908 3.9998-3.9998 3.9998zm19.4643-6.0004L15.4632 3.072C14.3586 1.1587 11.9121.5028 9.9988 1.6074S7.4295 5.1585 8.5341 7.0718l8.0009 13.8567c1.1046 1.9133 3.5511 2.5679 5.4644 1.4646 1.9134-1.1046 2.568-3.5511 1.4647-5.4644zM7.5137 4.8438L1.5645 15.1484A4.5 4.5 0 0 1 4 14.4297c2.5597-.0075 4.6248 2.1585 4.4941 4.7148l3.2168-5.5723-3.6094-6.25c-.4499-.7793-.6322-1.6394-.5878-2.4784z"/></svg>Google Ads</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#AAAAAA" viewBox="0 0 24 24"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg>X / Twitter</span>
+      <span class="ticker-item"><svg width="16" height="16" style="flex-shrink:0" fill="#E37400" viewBox="0 0 24 24"><path d="M22.84 2.9982v17.9987c.0086 1.6473-1.3197 2.9897-2.967 2.9984a2.9808 2.9808 0 01-.3677-.0208c-1.528-.226-2.6477-1.5558-2.6105-3.1V3.1204c-.0369-1.5458 1.0856-2.8762 2.6157-3.1 1.6361-.1915 3.1178.9796 3.3093 2.6158.014.1201.0208.241.0202.3619zM4.1326 18.0548c-1.6417 0-2.9726 1.331-2.9726 2.9726C1.16 22.6691 2.4909 24 4.1326 24s2.9726-1.3309 2.9726-2.9726-1.331-2.9726-2.9726-2.9726zm7.8728-9.0098c-.0171 0-.0342 0-.0513.0003-1.6495.0904-2.9293 1.474-2.891 3.1256v7.9846c0 2.167.9535 3.4825 2.3505 3.763 1.6118.3266 3.1832-.7152 3.5098-2.327.04-.1974.06-.3983.0593-.5998v-8.9585c.003-1.6474-1.33-2.9852-2.9773-2.9882z"/></svg>Analytics</span>
+    </div>
   </div>
 </div>
  
@@ -599,25 +727,25 @@ footer {
   <p class="section-label">About</p>
   <h2 class="section-heading">Who I am &amp; <em>what I do</em></h2>
   <p class="about-lead">Results-driven Paid Social Executive with 5+ years managing <strong>$7M–10M+</strong> in advertising budgets across Meta, TikTok, Snapchat, Pinterest, and LinkedIn — specialising in full-funnel performance strategy across the US and 11+ EU markets.</p>
-  <p class="about-body">Currently Senior Paid Social Executive at WPP Media in Warsaw, managing full-funnel campaigns for US market clients including Circle K. Previously at Groupon managing $350K–$550K/month across 11+ EU markets. Meta Certified Media Buying Professional with a track record of exceeding CPI, CPL, and ROAS targets for DTC and enterprise clients.</p>
+  <p class="about-body">Currently Senior Paid Social Executive at WPP Media in Warsaw, managing full-funnel campaigns for US market clients including Circle K and FMCG brands. Previously at Groupon managing $350K–$550K/month across 11+ EU markets. Meta Certified Media Buying Professional with a track record of exceeding CPI, CPL, and ROAS targets for DTC and enterprise clients.</p>
  
-  <div class="stats-row">
-    <div class="stat"><span class="stat-n" id="c1">$0</span><span class="stat-l">Ad spend managed</span></div>
-    <div class="stat"><span class="stat-n" id="c2">0</span><span class="stat-l">Years experience</span></div>
-    <div class="stat"><span class="stat-n" id="c3">0</span><span class="stat-l">Certifications</span></div>
-    <div class="stat"><span class="stat-n">EU+US</span><span class="stat-l">Markets</span></div>
+  <div class="stats-row" role="list">
+    <div class="stat" role="listitem"><span class="stat-n" id="c1">$0</span><span class="stat-l">Ad spend managed</span></div>
+    <div class="stat" role="listitem"><span class="stat-n" id="c2">0</span><span class="stat-l">Years experience</span></div>
+    <div class="stat" role="listitem"><span class="stat-n" id="c3">0</span><span class="stat-l">Certifications</span></div>
+    <div class="stat" role="listitem"><span class="stat-n">EU+US</span><span class="stat-l">Markets</span></div>
   </div>
  
-  <p class="follow-label" style="margin-bottom:12px">Certifications</p>
-  <div class="cert-row">
-    <span class="cert">🏆 Meta Certified Media Buyer</span>
-    <span class="cert">🏆 TikTok Media Buying Certification</span>
-    <span class="cert">🏆 Google Ads Search Certification</span>
-    <span class="cert">Pinterest Media Buyer</span>
-    <span class="cert">Snapchat Essentials</span>
-    <span class="cert">Reddit Ads Boost</span>
-    <span class="cert">Google Ads Badge</span>
-    <span class="cert">LinkedIn Marketing Solutions</span>
+  <p class="follow-label" style="margin-bottom:var(--sp-3)">Certifications</p>
+  <div class="cert-row" role="list">
+    <span class="cert" role="listitem">🏆 Meta Certified Media Buyer</span>
+    <span class="cert" role="listitem">🏆 TikTok Media Buying Certification</span>
+    <span class="cert" role="listitem">🏆 Google Ads Search Certification</span>
+    <span class="cert" role="listitem">Pinterest Media Buyer</span>
+    <span class="cert" role="listitem">Snapchat Essentials</span>
+    <span class="cert" role="listitem">Reddit Ads Boost</span>
+    <span class="cert" role="listitem">Google Ads Badge</span>
+    <span class="cert" role="listitem">LinkedIn Marketing Solutions</span>
   </div>
 </section>
  
@@ -628,7 +756,7 @@ footer {
   <div class="card-list">
  
     <div class="card-row expanded">
-      <div class="card-icon">
+      <div class="card-icon" aria-hidden="true">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
       </div>
       <div class="card-body">
@@ -650,15 +778,15 @@ footer {
         <li>ROAS optimization and budget pacing across campaigns, ad sets and accounts</li>
       </ul>
       <div class="card-kpis">
-        <div class="card-kpi-v">$550K <span class="card-kpi-l">max monthly spend</span></div>
-        <div class="card-kpi-v">4+ yrs <span class="card-kpi-l">platform experience</span></div>
-        <div class="card-kpi-v">INTL <span class="card-kpi-l">market scope</span></div>
+        <div><div class="card-kpi-v">$550K</div><div class="card-kpi-l">max monthly spend</div></div>
+        <div><div class="card-kpi-v">4+ yrs</div><div class="card-kpi-l">platform experience</div></div>
+        <div><div class="card-kpi-v">INTL</div><div class="card-kpi-l">market scope</div></div>
       </div>
     </div>
  
     <div class="card-row expanded">
-      <div class="card-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFC00" style="background:#222;border-radius:4px;padding:1px"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.07.03.196.075.371.074.265-.01.57-.092.881-.265a1.24 1.24 0 0 1 .606-.166c.185 0 .37.03.534.092.81.287.94.983.94 1.289 0 .672-.5 1.076-1.23 1.416-.1.053-.24.11-.38.165-.26.107-.553.225-.644.309-.015.014-.031.032-.047.054.01.006.024.015.044.027.171.107.485.307.839.546 1.025.682 2.428 1.617 2.428 2.713 0 .548-.44 1.047-1.066 1.247-.184.06-.37.087-.547.087-.22 0-.42-.038-.594-.097-.294-.097-.544-.24-.723-.34l-.116-.063c0 .02.001.04.003.063.046.667.098 1.423-.16 2.073-.481 1.212-2.521 2.069-4.467 2.069a8.14 8.14 0 0 1-.463-.026c-.264-.013-.53-.048-.796-.09-.344.418-.86.697-1.63.697-.835 0-1.342-.338-1.638-.693-.265.043-.531.078-.793.09a7.98 7.98 0 0 1-.463.026c-1.946 0-3.986-.857-4.467-2.069-.258-.65-.206-1.406-.16-2.073.002-.023.003-.044.003-.063l-.116.063c-.18.1-.43.243-.723.34a1.823 1.823 0 0 1-.594.097 1.84 1.84 0 0 1-.547-.087C1.44 16.04 1 15.54 1 14.993c0-1.096 1.403-2.03 2.428-2.713.354-.239.668-.439.839-.546.02-.012.033-.02.044-.027a.386.386 0 0 0-.047-.054c-.091-.084-.384-.202-.644-.309a5.957 5.957 0 0 1-.38-.165C2.5 10.859 2 10.455 2 9.783c0-.306.13-1.002.94-1.289a1.62 1.62 0 0 1 .535-.092 1.24 1.24 0 0 1 .605.166c.311.173.616.255.881.265.175.001.301-.044.371-.074l-.03-.51-.003-.06C5.196 6.69 5.07 4.664 5.6 3.471 7.183 1.07 10.44.793 11.43.793l.776-.001z"/></svg>
+      <div class="card-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFC00" style="background:#111;border-radius:4px;padding:1px"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.07.03.196.075.371.074.265-.01.57-.092.881-.265a1.24 1.24 0 0 1 .606-.166c.185 0 .37.03.534.092.81.287.94.983.94 1.289 0 .672-.5 1.076-1.23 1.416-.1.053-.24.11-.38.165-.26.107-.553.225-.644.309-.015.014-.031.032-.047.054.01.006.024.015.044.027.171.107.485.307.839.546 1.025.682 2.428 1.617 2.428 2.713 0 .548-.44 1.047-1.066 1.247-.184.06-.37.087-.547.087-.22 0-.42-.038-.594-.097-.294-.097-.544-.24-.723-.34l-.116-.063c0 .02.001.04.003.063.046.667.098 1.423-.16 2.073-.481 1.212-2.521 2.069-4.467 2.069a8.14 8.14 0 0 1-.463-.026c-.264-.013-.53-.048-.796-.09-.344.418-.86.697-1.63.697-.835 0-1.342-.338-1.638-.693-.265.043-.531.078-.793.09a7.98 7.98 0 0 1-.463.026c-1.946 0-3.986-.857-4.467-2.069-.258-.65-.206-1.406-.16-2.073.002-.023.003-.044.003-.063l-.116.063c-.18.1-.43.243-.723.34a1.823 1.823 0 0 1-.594.097 1.84 1.84 0 0 1-.547-.087C1.44 16.04 1 15.54 1 14.993c0-1.096 1.403-2.03 2.428-2.713.354-.239.668-.439.839-.546.02-.012.033-.02.044-.027a.386.386 0 0 0-.047-.054c-.091-.084-.384-.202-.644-.309a5.957 5.957 0 0 1-.38-.165C2.5 10.859 2 10.455 2 9.783c0-.306.13-1.002.94-1.289a1.62 1.62 0 0 1 .535-.092 1.24 1.24 0 0 1 .605.166c.311.173.616.255.881.265.175.001.301-.044.371-.074l-.03-.51-.003-.06C5.196 6.69 5.07 4.664 5.6 3.471 7.183 1.07 10.44.793 11.43.793l.776-.001z"/></svg>
       </div>
       <div class="card-body">
         <div class="card-no">02 · Snapchat</div>
@@ -678,8 +806,8 @@ footer {
     </div>
  
     <div class="card-row expanded">
-      <div class="card-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+      <div class="card-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#EE1D52"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
       </div>
       <div class="card-body">
         <div class="card-no">03 · Social Platforms</div>
@@ -699,7 +827,7 @@ footer {
     </div>
  
     <div class="card-row expanded">
-      <div class="card-icon">
+      <div class="card-icon" aria-hidden="true">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="#E37400"><path d="M22.84 2.998C22.84.974 21.866 0 19.843 0h-3.984c-2.024 0-2.998.974-2.998 2.998v18.004c0 2.025.974 2.998 2.998 2.998h3.984c2.023 0 2.997-.973 2.997-2.998V2.998zM14.157 9.01c0-2.025-.974-2.999-2.998-2.999H7.175c-2.025 0-2.999.974-2.999 2.998v12.99C4.176 24.024 5.15 24 7.159 24h3.984c2.024 0 2.998-.974 2.998-2.998V9.01h.016zM4.183 18.03c0-2.025-.974-2.999-2.998-2.999H1.16C-.001 15.031 0 16.005 0 18.03v3.984C0 24.038.974 24 2.998 24h.987c2.025 0 2.998-.973 2.198-2.998v-2.972z"/></svg>
       </div>
       <div class="card-body">
@@ -720,8 +848,8 @@ footer {
     </div>
  
     <div class="card-row expanded">
-      <div class="card-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="14.83" y1="9.17" x2="18.36" y2="5.64"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
+      <div class="card-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
       </div>
       <div class="card-body">
         <div class="card-no">05 · Strategy</div>
@@ -744,14 +872,14 @@ footer {
   </div>
  
   <!-- Skill bars -->
-  <div class="skill-section" id="skillBars" style="margin-top:48px;padding-top:40px;border-top:1px solid var(--rule)">
-    <p class="follow-label" style="margin-bottom:20px">Proficiency</p>
-    <div class="skill-row-item"><span class="skill-name">Meta / Facebook / Instagram</span><div class="skill-track"><div class="skill-fill" data-w="96"></div></div><span class="skill-pct">96%</span></div>
-    <div class="skill-row-item"><span class="skill-name">Campaign Optimization</span><div class="skill-track"><div class="skill-fill" data-w="93"></div></div><span class="skill-pct">93%</span></div>
-    <div class="skill-row-item"><span class="skill-name">Audience Targeting</span><div class="skill-track"><div class="skill-fill" data-w="91"></div></div><span class="skill-pct">91%</span></div>
-    <div class="skill-row-item"><span class="skill-name">Snapchat Advertising</span><div class="skill-track"><div class="skill-fill" data-w="86"></div></div><span class="skill-pct">86%</span></div>
-    <div class="skill-row-item"><span class="skill-name">Analytics &amp; Reporting</span><div class="skill-track"><div class="skill-fill" data-w="82"></div></div><span class="skill-pct">82%</span></div>
-    <div class="skill-row-item"><span class="skill-name">TikTok · Snapchat · Pinterest</span><div class="skill-track"><div class="skill-fill" data-w="79"></div></div><span class="skill-pct">79%</span></div>
+  <div class="skill-section" id="skillBars">
+    <p class="follow-label" style="margin-bottom:var(--sp-4)">Proficiency</p>
+    <div class="skill-row-item"><span class="skill-name">Meta / Facebook / Instagram</span><div class="skill-track" role="progressbar" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100" aria-label="Meta proficiency 96%"><div class="skill-fill" data-w="96"></div></div><span class="skill-pct">96%</span></div>
+    <div class="skill-row-item"><span class="skill-name">Campaign Optimization</span><div class="skill-track" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" aria-label="Campaign optimization proficiency 93%"><div class="skill-fill" data-w="93"></div></div><span class="skill-pct">93%</span></div>
+    <div class="skill-row-item"><span class="skill-name">Audience Targeting</span><div class="skill-track" role="progressbar" aria-valuenow="91" aria-valuemin="0" aria-valuemax="100" aria-label="Audience targeting proficiency 91%"><div class="skill-fill" data-w="91"></div></div><span class="skill-pct">91%</span></div>
+    <div class="skill-row-item"><span class="skill-name">Snapchat Advertising</span><div class="skill-track" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" aria-label="Snapchat proficiency 86%"><div class="skill-fill" data-w="86"></div></div><span class="skill-pct">86%</span></div>
+    <div class="skill-row-item"><span class="skill-name">Analytics &amp; Reporting</span><div class="skill-track" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" aria-label="Analytics proficiency 82%"><div class="skill-fill" data-w="82"></div></div><span class="skill-pct">82%</span></div>
+    <div class="skill-row-item"><span class="skill-name">TikTok · Snapchat · Pinterest</span><div class="skill-track" role="progressbar" aria-valuenow="79" aria-valuemin="0" aria-valuemax="100" aria-label="TikTok Snapchat Pinterest proficiency 79%"><div class="skill-fill" data-w="79"></div></div><span class="skill-pct">79%</span></div>
   </div>
 </section>
  
@@ -760,10 +888,62 @@ footer {
   <p class="section-label">Experience</p>
   <h2 class="section-heading">Work <em>history</em></h2>
   <div class="xp-list">
-    <div class="xp-item"><div class="xp-period">Dec 2025<br>Present</div><div><div class="xp-role">Senior Paid Social Executive</div><div class="xp-co">WPP Media · Warsaw, Poland</div><ul class="xp-bullets"><li>Manage full-funnel paid social campaigns across Meta, TikTok, Snapchat, and Pinterest for US market clients including <strong>Circle K</strong> and <strong>FMCG brands</strong>.</li><li>Execute paid social strategies for FMCG clients, driving product awareness, in-store traffic, and consumer acquisition across competitive CPG categories.</li><li>Scale and optimise campaigns to exceed client KPIs including CPI, CPL, and customer acquisition targets.</li><li>Develop comprehensive performance and brand awareness digital strategies, aligning media execution with business objectives.</li><li>Monitor emerging platform trends and implement new ad products and beta features to maintain competitive edge.</li></ul></div></div>
-    <div class="xp-item"><div class="xp-period">Jan 2026<br>Mar 2026</div><div><div class="xp-role">Media Buyer — E-Commerce (Contract)</div><div class="xp-co">KENSUI Fitness · Remote</div><ul class="xp-bullets"><li>Managed DTC performance campaigns on Meta for global markets — achieved <strong>2.8x ROAS in Month 1</strong> on a $59K budget, generating <strong>$196K in conversion value</strong> at $20–$30 CPA.</li><li>Built custom and lookalike audiences; implemented AI-generated UGC creatives for A/B testing to reduce ad fatigue.</li><li>Launched Dynamic Product Ad (DPA) sets and conducted competitor analysis to inform paid social strategy.</li></ul></div></div>
-    <div class="xp-item"><div class="xp-period">Mar 2023<br>Dec 2023</div><div><div class="xp-role">Media Operations Specialist — Paid Social</div><div class="xp-co">Groupon · Warsaw, Poland</div><ul class="xp-bullets"><li>Managed <strong>$350K–$550K monthly paid social budgets</strong> across Meta, TikTok, Snapchat, and Pinterest for <strong>11+ EU markets</strong>.</li><li>Built, launched, and optimised performance campaigns focused on customer acquisition and financial KPIs.</li><li>Conducted systematic A/B testing on creatives, audiences, and bidding strategies to continuously improve ROI.</li><li>Produced weekly performance reports; coordinated with media partners, internal marketing, and creative teams.</li></ul></div></div>
-    <div class="xp-item"><div class="xp-period">Jul 2022<br>Sep 2022</div><div><div class="xp-role">Junior Marketing &amp; Online Media Manager</div><div class="xp-co">PROLEAGION GmbH · Wiesbaden, Germany</div><ul class="xp-bullets"><li>Planned, executed, and optimised performance campaigns across display, social, mobile, and programmatic channels.</li><li>Acquired new marketing partners and direct publishers; conducted market and competitive analysis.</li><li>Represented the company at national and international industry events.</li></ul></div></div>
+ 
+    <div class="xp-item">
+      <div class="xp-period">Dec 2025<br>Present</div>
+      <div>
+        <div class="xp-role">Senior Paid Social Executive</div>
+        <div class="xp-co">WPP Media · Warsaw, Poland</div>
+        <ul class="xp-bullets">
+          <li>Manage full-funnel paid social campaigns across Meta, TikTok, Snapchat, and Pinterest for US market clients including <strong>Circle K</strong> and <strong>FMCG brands</strong>.</li>
+          <li>Execute paid social strategies for FMCG clients, driving product awareness, in-store traffic, and consumer acquisition across competitive CPG categories.</li>
+          <li>Scale and optimise campaigns to exceed client KPIs including CPI, CPL, and customer acquisition targets.</li>
+          <li>Develop comprehensive performance and brand awareness digital strategies, aligning media execution with business objectives.</li>
+          <li>Monitor emerging platform trends and implement new ad products and beta features to maintain competitive edge.</li>
+        </ul>
+      </div>
+    </div>
+ 
+    <div class="xp-item">
+      <div class="xp-period">Jan 2026<br>Mar 2026</div>
+      <div>
+        <div class="xp-role">Media Buyer — E-Commerce (Contract)</div>
+        <div class="xp-co">KENSUI Fitness · Remote</div>
+        <ul class="xp-bullets">
+          <li>Managed DTC performance campaigns on Meta for global markets — achieved <strong>2.8x ROAS in Month 1</strong> on a $59K budget, generating <strong>$196K in conversion value</strong> at $20–$30 CPA.</li>
+          <li>Built custom and lookalike audiences; implemented AI-generated UGC creatives for A/B testing to reduce ad fatigue.</li>
+          <li>Launched Dynamic Product Ad (DPA) sets and conducted competitor analysis to inform paid social strategy.</li>
+        </ul>
+      </div>
+    </div>
+ 
+    <div class="xp-item">
+      <div class="xp-period">Mar 2023<br>Dec 2023</div>
+      <div>
+        <div class="xp-role">Media Operations Specialist — Paid Social</div>
+        <div class="xp-co">Groupon · Warsaw, Poland</div>
+        <ul class="xp-bullets">
+          <li>Managed <strong>$350K–$550K monthly paid social budgets</strong> across Meta, TikTok, Snapchat, and Pinterest for <strong>11+ EU markets</strong>.</li>
+          <li>Built, launched, and optimised performance campaigns focused on customer acquisition and financial KPIs.</li>
+          <li>Conducted systematic A/B testing on creatives, audiences, and bidding strategies to continuously improve ROI.</li>
+          <li>Produced weekly performance reports; coordinated with media partners, internal marketing, and creative teams.</li>
+        </ul>
+      </div>
+    </div>
+ 
+    <div class="xp-item">
+      <div class="xp-period">Jul 2022<br>Sep 2022</div>
+      <div>
+        <div class="xp-role">Junior Marketing &amp; Online Media Manager</div>
+        <div class="xp-co">PROLEAGION GmbH · Wiesbaden, Germany</div>
+        <ul class="xp-bullets">
+          <li>Planned, executed, and optimised performance campaigns across display, social, mobile, and programmatic channels.</li>
+          <li>Acquired new marketing partners and direct publishers; conducted market and competitive analysis.</li>
+          <li>Represented the company at national and international industry events.</li>
+        </ul>
+      </div>
+    </div>
+ 
   </div>
 </section>
  
@@ -775,9 +955,9 @@ footer {
  
     <div class="rec-card">
       <div class="rec-header">
-        <div class="rec-avatar">LC</div>
+        <div class="rec-avatar" aria-hidden="true">LC</div>
         <div class="rec-meta">
-          <div class="rec-name"><a href="https://www.linkedin.com/in/mierluis/" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--orange);">Luis Carlos Mier Sandoval</a></div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/mierluis/" target="_blank" rel="noopener">Luis Carlos Mier Sandoval</a></div>
           <div class="rec-title">Social Ads · Programmatic · Campaign Manager (DCM) · Trafficker · Tags &amp; Pixels · Google Ads · JIRA</div>
           <div class="rec-date">June 22, 2026 · WPP Media</div>
           <span class="rec-relation">Managed Rasulbek on the project</span>
@@ -792,9 +972,9 @@ footer {
  
     <div class="rec-card">
       <div class="rec-header">
-        <div class="rec-avatar">KK</div>
+        <div class="rec-avatar" aria-hidden="true">KK</div>
         <div class="rec-meta">
-          <div class="rec-name"><a href="https://www.linkedin.com/in/klaudia-koper-859405227/" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--orange);">Klaudia Koper</a></div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/klaudia-koper-859405227/" target="_blank" rel="noopener">Klaudia Koper</a></div>
           <div class="rec-title">Senior Social Executive · Global Operations Centre · WPP Media</div>
           <div class="rec-date">June 22, 2026 · WPP Media</div>
           <span class="rec-relation">Senior colleague, same team</span>
@@ -810,9 +990,9 @@ footer {
  
     <div class="rec-card">
       <div class="rec-header">
-        <div class="rec-avatar">TS</div>
+        <div class="rec-avatar" aria-hidden="true">TS</div>
         <div class="rec-meta">
-          <div class="rec-name"><a href="https://www.linkedin.com/in/trygvesigsandberg/" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--orange);">Trygve Sandberg</a></div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/trygvesigsandberg/" target="_blank" rel="noopener">Trygve Sandberg</a></div>
           <div class="rec-title">Associate Director, Paid Social · WPP Media</div>
           <div class="rec-date">June 22, 2026 · WPP Media</div>
           <span class="rec-relation">Managed Rasulbek directly</span>
@@ -825,9 +1005,9 @@ footer {
  
     <div class="rec-card">
       <div class="rec-header">
-        <div class="rec-avatar">SW</div>
+        <div class="rec-avatar" aria-hidden="true">SW</div>
         <div class="rec-meta">
-          <div class="rec-name"><a href="https://www.linkedin.com/in/shreya-waghmare-8aa455191/" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--orange);">Shreya Waghmare</a></div>
+          <div class="rec-name"><a href="https://www.linkedin.com/in/shreya-waghmare-8aa455191/" target="_blank" rel="noopener">Shreya Waghmare</a></div>
           <div class="rec-title">PPC Specialist at SCIEX – A Danaher Company · Former Google &amp; Groupon</div>
           <div class="rec-date">December 4, 2023 · Groupon</div>
           <span class="rec-relation">Worked at Groupon together</span>
@@ -845,20 +1025,22 @@ footer {
 <section id="contact">
   <p class="section-label">Contact</p>
   <h2 class="section-heading">Let's work <em>together</em></h2>
-  <p class="about-body" style="max-width:420px;margin-bottom:0">Open to exciting opportunities, collaborations, or great conversations about Paid Social strategy.</p>
+  <p class="about-body" style="max-width:440px;margin-bottom:0">Open to exciting opportunities, collaborations, or great conversations about Paid Social strategy.</p>
   <div class="contact-links">
-    <a href="mailto:rrasulbekr@gmail.com" class="contact-link"><span>rrasulbekr@gmail.com</span><span class="contact-arrow">↗</span></a>
-    <a href="https://www.linkedin.com/in/rasulbek-rustamov/" class="contact-link" target="_blank"><span>LinkedIn</span><span class="contact-arrow">↗</span></a>
-    <a href="https://t.me/rasulbekrustamov" class="contact-link" target="_blank"><span>Telegram</span><span class="contact-arrow">↗</span></a>
+    <a href="mailto:rrasulbekr@gmail.com" class="contact-link"><span>rrasulbekr@gmail.com</span><span class="contact-arrow" aria-hidden="true">↗</span></a>
+    <a href="https://www.linkedin.com/in/rasulbek-rustamov/" class="contact-link" target="_blank" rel="noopener"><span>LinkedIn</span><span class="contact-arrow" aria-hidden="true">↗</span></a>
+    <a href="https://t.me/rasulbekrustamov" class="contact-link" target="_blank" rel="noopener"><span>Telegram</span><span class="contact-arrow" aria-hidden="true">↗</span></a>
   </div>
-  <div class="lang-grid">
-    <div class="lang-cell"><span class="lang-name">English</span><span class="lang-level">Full Professional</span></div>
-    <div class="lang-cell"><span class="lang-name">Russian</span><span class="lang-level">Professional</span></div>
-    <div class="lang-cell"><span class="lang-name">Uzbek</span><span class="lang-level">Native</span></div>
-    <div class="lang-cell"><span class="lang-name">Polish</span><span class="lang-level">Elementary</span></div>
+  <div class="lang-grid" role="list">
+    <div class="lang-cell" role="listitem"><span class="lang-name">English</span><span class="lang-level">Full Professional</span></div>
+    <div class="lang-cell" role="listitem"><span class="lang-name">Russian</span><span class="lang-level">Professional</span></div>
+    <div class="lang-cell" role="listitem"><span class="lang-name">Uzbek</span><span class="lang-level">Native</span></div>
+    <div class="lang-cell" role="listitem"><span class="lang-name">Polish</span><span class="lang-level">Elementary</span></div>
   </div>
 </section>
 </div>
+ 
+</main>
  
 <footer>
   <span>© 2026 Rasulbek Rustamov</span>
@@ -866,7 +1048,7 @@ footer {
 </footer>
  
 <script>
-// Theme
+// ── THEME ──
 const btn = document.getElementById('themeBtn');
 if (localStorage.getItem('rr-theme') === 'dark') document.body.classList.add('dark');
 btn.addEventListener('click', () => {
@@ -874,41 +1056,71 @@ btn.addEventListener('click', () => {
   localStorage.setItem('rr-theme', document.body.classList.contains('dark') ? 'dark' : 'light');
 });
  
-// Nav scroll
+// ── MOBILE MENU ──
+function openMobileMenu() {
+  document.getElementById('mobMenu').classList.add('open');
+  document.getElementById('hamBtn').setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  document.getElementById('mobMenu').classList.remove('open');
+  document.getElementById('hamBtn').setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+// Close on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeMobileMenu();
+});
+ 
+// ── NAV SCROLL ──
 window.addEventListener('scroll', () =>
   document.getElementById('nav').classList.toggle('scrolled', scrollY > 40));
  
-// Counters
-function count(el, target, pre, suf, ms) {
+// ── COUNTERS ──
+document.getElementById('c1').textContent = '$7M–10M+';
+function count(el, target, suf, ms) {
   let s = 0, step = target / 55;
   const iv = setInterval(() => {
     s = Math.min(s + step, target);
-    el.textContent = pre + Math.round(s) + suf;
+    el.textContent = Math.round(s) + suf;
     if (s >= target) clearInterval(iv);
   }, ms);
 }
-document.getElementById('c1').textContent = '$7M–10M+';
-count(document.getElementById('c2'), 5, '', '+', 35);
-count(document.getElementById('c3'), 8, '', '', 40);
+count(document.getElementById('c2'), 5, '+', 35);
+count(document.getElementById('c3'), 8, '', 40);
  
-// Skill bars
-const bio = new IntersectionObserver(entries => {
+// ── SKILL BARS (IntersectionObserver) ──
+const skillObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       document.querySelectorAll('.skill-fill').forEach(b => b.style.width = b.dataset.w + '%');
-      bio.disconnect();
+      skillObs.disconnect();
     }
   });
 }, { threshold: .3 });
-bio.observe(document.getElementById('skillBars'));
+skillObs.observe(document.getElementById('skillBars'));
  
-// Experience reveal
-const io = new IntersectionObserver(entries => {
+// ── EXPERIENCE REVEAL ──
+const xpObs = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
-    if (e.isIntersecting) setTimeout(() => e.target.classList.add('show'), i * 100);
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('show'), i * 110);
   });
 }, { threshold: .1 });
-document.querySelectorAll('.xp-item').forEach(el => io.observe(el));
+document.querySelectorAll('.xp-item').forEach(el => xpObs.observe(el));
+ 
+// ── NAV ACTIVE STATE (highlight current section) ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-center a');
+const sectionObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.removeAttribute('aria-current'));
+      const link = document.querySelector(`.nav-center a[href="#${e.target.id}"]`);
+      if (link) link.setAttribute('aria-current', 'page');
+    }
+  });
+}, { threshold: .4 });
+sections.forEach(s => sectionObs.observe(s));
 </script>
 </body>
 </html>
